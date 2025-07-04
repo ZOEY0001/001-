@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>神秘链接</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <style type="text/tailwindcss">
+    @theme {
+      --color-primary: #ff4d4f;
+      --color-secondary: #ff7d00;
+      --color-dark: #1f2937;
+      --color-light: #f9fafb;
+      --font-inter: 'Inter', sans-serif;
+    }
+    
+    @utility float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @utility pulse-effect {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
+    .smile-eye:hover circle {
+      r: 8;
+    }
+    
+    .smile-mouth path {
+      d: path('M12 16a2 2 0 0 1 0-4a2 2 0 0 1 0 4');
+      transition: d 0.5s ease;
+    }
+    
+    .smile-mouth:hover path {
+      d: path('M12 18a4 4 0 0 1 0-8a4 4 0 0 1 0 8');
+    }
+  </style>
+</head>
+<body class="font-inter bg-gradient-to-br from-dark to-slate-800 min-h-screen flex items-center justify-center p-4 text-light">
+  <!-- 初始加载界面 -->
+  <div id="loading" class="max-w-md w-full bg-slate-900/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-slate-700 float-animation">
+    <div class="text-center">
+      <div class="text-4xl mb-6 text-primary pulse-effect">
+        <i class="fas fa-link"></i>
+      </div>
+      <h2 class="text-2xl font-bold mb-4">神秘链接</h2>
+      <p class="text-slate-400 mb-8">点击下方按钮，查看惊喜内容</p>
+      <button id="clickMe" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
+        点击探索 <i class="fas fa-arrow-right ml-2"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 笑脸展示界面（初始隐藏） -->
+  <div id="smileContainer" class="hidden max-w-md w-full bg-slate-900/80 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-slate-700">
+    <div class="text-center">
+      <button id="closeSmile" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+      <h2 class="text-2xl font-bold mb-6 text-secondary">你被嘲讽了！</h2>
+      
+      <!-- 高级嘲讽笑脸SVG -->
+      <div class="flex justify-center mb-6">
+        <svg id="smileFace" width="200" height="200" viewBox="0 0 24 24" class="mx-auto">
+          <!-- 笑脸背景 -->
+          <circle cx="12" cy="12" r="10" fill="#FFD700" stroke="#FFA500" stroke-width="2" />
+          
+          <!-- 左眼 -->
+          <g class="smile-eye">
+            <circle cx="9" cy="10" r="6" fill="white" stroke="#333" stroke-width="1" />
+            <circle cx="9" cy="10" r="2" fill="#333" />
+          </g>
+          
+          <!-- 右眼 -->
+          <g class="smile-eye">
+            <circle cx="15" cy="10" r="6" fill="white" stroke="#333" stroke-width="1" />
+            <circle cx="15" cy="10" r="2" fill="#333" />
+          </g>
+          
+          <!-- 嘴巴 -->
+          <g class="smile-mouth">
+            <path d="M12 16a2 2 0 0 1 0-4a2 2 0 0 1 0 4" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" />
+          </g>
+          
+          <!-- 嘲讽符号 -->
+          <text x="12" y="22" font-size="14" text-anchor="middle" fill="#FF4500" font-weight="bold">😝</text>
+        </svg>
+      </div>
+      
+      <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+        <p class="text-slate-300 text-center">哈哈，没想到吧！<br>这个链接就是用来嘲讽你的～</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loading = document.getElementById('loading');
+      const smileContainer = document.getElementById('smileContainer');
+      const clickMeBtn = document.getElementById('clickMe');
+      const closeSmileBtn = document.getElementById('closeSmile');
+      const smileFace = document.getElementById('smileFace');
+      
+      // 点击按钮显示笑脸
+      clickMeBtn.addEventListener('click', function() {
+        loading.classList.add('opacity-0', 'pointer-events-none');
+        loading.style.transition = 'opacity 0.5s ease, pointer-events 0.5s ease';
+        
+        setTimeout(() => {
+          loading.classList.add('hidden');
+          smileContainer.classList.remove('hidden');
+          smileContainer.classList.add('opacity-100');
+          smileContainer.style.transition = 'opacity 0.8s ease';
+          
+          // 笑脸动画
+          smileFace.style.animation = 'bounce 1s ease';
+        }, 500);
+      });
+      
+      // 关闭笑脸
+      closeSmileBtn.addEventListener('click', function() {
+        smileContainer.classList.add('opacity-0', 'pointer-events-none');
+        smileContainer.style.transition = 'opacity 0.5s ease, pointer-events 0.5s ease';
+        
+        setTimeout(() => {
+          smileContainer.classList.add('hidden');
+          loading.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+          loading.style.transition = 'opacity 0.5s ease, pointer-events 0.5s ease';
+        }, 500);
+      });
+      
+      // 鼠标移动时眼睛跟随效果（简化版）
+      let isHovering = false;
+      smileContainer.addEventListener('mouseenter', function() {
+        isHovering = true;
+        animateEyes();
+      });
+      
+      smileContainer.addEventListener('mouseleave', function() {
+        isHovering = false;
+      });
+      
+      function animateEyes() {
+        if (!isHovering) return;
+        
+        const eyes = smileFace.querySelectorAll('.smile-eye circle:nth-child(2)');
+        const mouseX = event.clientX - smileFace.getBoundingClientRect().left;
+        const mouseY = event.clientY - smileFace.getBoundingClientRect().top;
+        const centerX = smileFace.getBoundingClientRect().width / 2;
+        const centerY = smileFace.getBoundingClientRect().height / 2;
+        
+        // 计算眼睛偏移
+        const offsetX1 = (mouseX - centerX) / 20;
+        const offsetY1 = (mouseY - centerY) / 20;
+        const offsetX2 = (mouseX - centerX) / 20;
+        const offsetY2 = (mouseY - centerY) / 20;
+        
+        // 限制偏移范围
+        const maxOffset = 3;
+        eyes[0].setAttribute('cx', 9 + Math.max(-maxOffset, Math.min(maxOffset, offsetX1)));
+        eyes[0].setAttribute('cy', 10 + Math.max(-maxOffset, Math.min(maxOffset, offsetY1)));
+        eyes[1].setAttribute('cx', 15 + Math.max(-maxOffset, Math.min(maxOffset, offsetX2)));
+        eyes[1].setAttribute('cy', 10 + Math.max(-maxOffset, Math.min(maxOffset, offsetY2)));
+        
+        requestAnimationFrame(animateEyes);
+      }
+    });
+  </script>
+</body>
+</html>
